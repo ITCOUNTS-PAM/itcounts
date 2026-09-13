@@ -1,7 +1,7 @@
 /* ITCOUNTS NOTE · Service Worker
    策略：页面(导航)与 version.json 走「网络优先」，拿不到再回退缓存(离线兜底)；
    其余静态资源走「缓存优先 + 后台更新」。每次发布把 CACHE 版本号 +1，旧缓存自动清除。 */
-var CACHE = 'itcounts-note-v85';
+var CACHE = 'itcounts-note-v95';
 var CORE = [
   './',
   './index.html',

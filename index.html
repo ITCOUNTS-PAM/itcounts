@@ -347,6 +347,13 @@
     font-style:normal;font-size:8.5px;color:#6a6a61;border:1px solid #dcdcd2;
     border-radius:4px;padding:1px 4px;flex:none;margin-top:2px;
   }
+  /* V.90：频率标签可点（改整组周期）。V.92：加虚线框 + ▾ —— 原来跟普通文字一样，
+     PAM 在 V.91 上仍然「找不到修改重复类型的地方」，能点但看不出能点等于没有。 */
+  .rtag[data-repcycle]{cursor:pointer;border:1px dashed #b4b2a9}
+  .rtag[data-repcycle]::after{content:'▾';margin-left:2px;font-size:7px;line-height:1}
+  .rtag[data-repcycle]:active{opacity:.6}
+  /* V.93：连续类型目标达成徽章 */
+  .rtag.ach{border:1px solid #97C459;background:#EAF3DE;color:#27500A;font-weight:500}
   .mtag.od{color:#b3543a;border-color:#e8cfc2}
   .ptag{
     font-style:normal;font-size:8px;font-weight:700;color:#fff;background:var(--accent);
@@ -636,16 +643,34 @@
   .done-tag-bar .done-tag-go{border:1px solid var(--line);background:transparent;color:var(--accent);border-radius:999px;padding:4px 12px;font-size:11px;font-family:inherit;cursor:pointer;line-height:1.4}
   .done-tag-bar .done-tag-go:active{background:var(--accent-soft)}
 
-  /* ---------- ITCOUNTS 占位页 ---------- */
-  .itc{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-bottom:80px}
-  .itc-logo{font-size:34px;font-weight:800;letter-spacing:4px}
-  .itc-logo span{color:var(--accent)}
-  .itc-sub{font-size:13px;color:var(--mut);margin-top:12px;letter-spacing:2px}
-  .itc-box{
-    margin-top:34px;border:1.5px dashed #d8d7cd;border-radius:18px;padding:26px 30px;
-    font-size:12px;color:var(--faint);line-height:2;
-  }
-  .itc-box b{color:var(--mut)}
+  /* ---------- V.86 ITCOUNTS 年度完成度地图 ---------- */
+  .itc{height:100%;overflow-y:auto;padding:0 2px 96px;-webkit-overflow-scrolling:touch}
+  .itc-year{display:flex;align-items:center;justify-content:center;gap:20px;margin:4px 0 16px}
+  .itc-year .y{font-size:19px;font-weight:600;min-width:70px;text-align:center;letter-spacing:1px}
+  .itc-year button{width:30px;height:30px;border:1px solid var(--line);background:transparent;border-radius:50%;color:var(--mut);font-size:14px;font-family:inherit;cursor:pointer;line-height:1}
+  .itc-year button:active{background:var(--accent-soft)}
+  .itc-year button:disabled{opacity:.3}
+  .itc-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:18px}
+  .itc-num{border:1px solid var(--line);border-radius:14px;padding:13px 6px;text-align:center}
+  .itc-num .v{font-size:23px;font-weight:600;color:var(--accent);line-height:1.2}
+  .itc-num .v small{font-size:11px;font-weight:400;margin-left:1px}
+  .itc-num .l{font-size:11px;color:var(--faint);margin-top:3px}
+  .itc-heat{border:1px solid var(--line);border-radius:14px;padding:12px 10px}
+  .itc-hd{font-size:12px;color:var(--mut);margin-bottom:9px;display:flex;justify-content:space-between;align-items:center}
+  .itc-legend{font-size:10px;color:var(--faint);display:flex;align-items:center;gap:3px}
+  .itc-legend i{width:7px;height:7px;border-radius:2px;display:block}
+  .itc-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+  .itc-m{width:16px;font-size:9px;color:var(--faint);text-align:right;flex:none}
+  .itc-cells{display:flex;gap:2px}
+  .itc-c{width:7px;height:7px;border-radius:2px;background:#ece9e2;flex:none}
+  .itc-c.lv1{background:#f7d5c6}
+  .itc-c.lv2{background:#eeae95}
+  .itc-c.lv3{background:#e08359}
+  .itc-c.lv4{background:var(--accent)}
+  .itc-c.fut{background:#f5f3ee}
+  .itc-c.today{box-shadow:0 0 0 1.5px var(--accent)}
+  .itc-foot{font-size:11px;color:var(--faint);line-height:1.8;margin-top:12px;padding:0 2px}
+  .itc-empty{text-align:center;color:var(--faint);font-size:12px;padding:44px 20px;line-height:2}
 
   /* ---------- MY DAYS 日记页 ---------- */
   .day-search{display:flex;gap:8px;margin:0 2px 8px}
@@ -699,7 +724,10 @@
     padding:9px 18px;border-radius:16px;opacity:0;transition:opacity .25s;
     pointer-events:none;white-space:nowrap;
   }
-  .tn-toast.show{opacity:.94}
+  .tn-toast.show{opacity:.94;pointer-events:auto}
+  .tn-toast-msg{margin-right:10px}
+  .tn-toast-act{border:1px solid rgba(255,255,255,.55);background:transparent;color:#fff;font-size:12px;font-family:inherit;padding:3px 12px;border-radius:12px;cursor:pointer;letter-spacing:.5px}
+  .tn-toast-act:active{background:rgba(255,255,255,.18)}
   .tq-bar{
     background:var(--accent-soft);border:1px solid #f0ded4;color:var(--accent);
     font-size:12px;border-radius:12px;padding:8px 12px;margin:0 2px 14px;
@@ -738,6 +766,8 @@
   .ent:last-child{padding-bottom:10px}
   .ent::before{content:"";position:absolute;left:4px;top:8px;bottom:2px;width:1.5px;background:var(--line)}
   .ent:last-child::before{display:none}
+  .ent-flash{box-shadow:0 0 0 2px var(--accent);border-radius:10px;animation:entFlash 1.8s ease forwards}
+  @keyframes entFlash{0%{box-shadow:0 0 0 3px var(--accent)}60%{box-shadow:0 0 0 2px var(--accent)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
   .ent::after{content:"";position:absolute;left:0;top:5px;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.85}
   .ent-t{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
   .ent-t .tm{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:.5px}
@@ -1139,6 +1169,9 @@
     display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;
   }
   .rp-conf .rp-bd-label{font-size:11px;color:var(--mut);margin-right:4px}
+  /* V.93：重复设置面板计数行 */
+  .rp-stat{font-size:12px;color:var(--mut);padding:8px 2px 2px;letter-spacing:.3px}
+  .rp-stat .rp-done{color:#3B6D11;font-weight:500}
   /* 标签抽屉 */
   .tg-pool{padding:6px 0;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid var(--line)}
   .tg-create{display:flex;gap:6px;padding:10px 0 0}
@@ -1187,6 +1220,21 @@
   .rep-item{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
   .rep-item:last-child{border-bottom:none}
   .rep-tx{flex:1;min-width:0;font-size:13px;font-weight:600;word-break:break-all}
+  /* V.88：周期组就地改名 —— 点名字变输入框，整组（所有期）一起改 */
+  .rep-tx{cursor:pointer}
+  .rep-edit-in{flex:1;min-width:110px;font-size:13px;font-weight:400;font-family:inherit;
+    border:0.5px solid var(--line);border-radius:7px;padding:3px 7px;background:var(--card);color:var(--ink);resize:none}
+  /* V.88：只看今天 —— 其余日期收成一行，点标题展开 */
+  .future-h{cursor:pointer}
+  .future-h:hover{color:var(--ink)}
+  /* V.88：已完成的沉底 + 变灰（V.91：从 .sub-it 放宽到 .st-item，
+     A 展开后的步骤列表也用同一套视觉） */
+  .st-item.s-done{opacity:.6}
+  .st-item.s-done .st-tx{text-decoration:line-through}
+  .st-item.allsub-done .st-tx{color:var(--mut)}
+  /* V.88：DONE 清单里的 A·B·C（子步骤）比 A·B 缩进一点、字小一号 */
+  .it.sub-done{padding-left:8px}
+  .it.sub-done .tx{font-size:12.5px;color:var(--mut)}
   .rep-dates{flex-basis:100%;font-size:10px;color:var(--mut);line-height:1.5}
   .rep-del{flex:none;border:1px solid #efd5cf;background:#fff;border-radius:8px;font-size:10px;color:#d6453a;padding:3px 9px;cursor:pointer;font-family:inherit}
   .rep-del:active{background:#fdf1ee}
@@ -1295,25 +1343,16 @@
             <button data-no="audio">声音</button>
             <button data-no="tag">标签</button>
           </div>
-          <button class="no-done" data-no="done">记好了 ✓</button>
+          <button class="no-done" data-no="done">保存 ✓</button>
           <input type="file" id="noPhotoFile" accept="image/*" multiple hidden>
           <input type="file" id="noAudioFile" accept="audio/*" hidden>
         </div>
       </section>
 
-      <!-- 屏4 · ITCOUNTS -->
+      <!-- 屏4 · ITCOUNTS（V.86 年度完成度地图） -->
       <section class="screen" id="scr-itc">
         <div class="brand">ITCOUNTS NOTE</div>
-        <div class="itc">
-          <div class="itc-logo">IT<span>COUNTS</span></div>
-          <div class="itc-sub">这一页，等我们一起定义</div>
-          <div class="itc-box">
-            <b>IT COUNTS — 每一天都算数</b><br>
-            这一页以后放什么？<br>
-            计数 / 统计 / 习惯打卡 / 成就墙 …<br>
-            想好了告诉小记，随时补上。
-          </div>
-        </div>
+        <div class="itc" id="itcWrap"></div>
       </section>
 
     </div>
@@ -1456,7 +1495,7 @@
 
 <script>
 /* ---------- 版本号：每次发布 +1 ---------- */
-var APP_VERSION='V.85';
+var APP_VERSION='V.95';
 /*LUNAR-START*/
 var LUNAR_INFO=[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,0x0d520];
 function leapMonth(y){return LUNAR_INFO[y-1900]&0xf;}
@@ -1859,6 +1898,11 @@ var state={
   stepSubSubOpen:null,
   multiDateVal:'',
   repOpen:false,
+  /* V.88 */
+  repEdit:null,/* 顶部周期列表里正在改名的组（key = 「周期|原名字」） */
+  todayOnly:false,/* 只看今天：其余日期收成一行 */
+  futureOpen:false,/* 「其余 N 天」那一行是否展开 */
+  subForceOpen:null,/* 子步骤全完成自动收起后，用户手动点开的那一个 */
   doneTagQuery:null,
   doneTagDraft:''/* V.72：DONE 标签筛选输入框的草稿（未回车提交前的内容） */
 };
@@ -1979,6 +2023,29 @@ function doneStepsOn(ds){
   return out;
 }
 /* 所有已完成步骤（整条已完成的待办其步骤并入整条、不单列） */
+/* V.88：PAM「子步骤完成后也需要进入 done 清单。显示 A-B，或者 A-B-C」
+   递归收集所有已完成的子步骤，path 是完整路径名「A·B·C」。
+   父待办整条完成时（t.done）不重复收集——那种情况 DONE 里显示的是整条 A。 */
+function allDoneSubs(){
+  var out=[];
+  state.todos.forEach(function(t){
+    if(t.done)return;
+    (t.steps||[]).forEach(function(s){
+      collectDoneSubs(t,s,s.sub||[],t.text+'·'+s.text,out);
+    });
+  });
+  return out;
+}
+function collectDoneSubs(t,step,arr,prefix,out){
+  arr.forEach(function(sb){
+    var path=prefix+'·'+sb.text;
+    if(sb.done)out.push({todo:t,step:step,sub:sb,path:path});
+    if(sb.sub&&sb.sub.length)collectDoneSubs(t,step,sb.sub,path,out);
+  });
+}
+function subDoneKey(x){
+  return (x.sub&&x.sub.doneAt)||(x.step&&(x.step.doneAt||x.step.date))||todayStr();
+}
 function allDoneSteps(){
   var out=[];
   state.todos.forEach(function(t){
@@ -2135,13 +2202,17 @@ function syncBirthdays(){
   try{triggerBdArrive();}catch(e){}
 }
 function migrateOverdue(){
-  var today=todayStr(),changed=false;
+  var today=todayStr(),changed=false,rollList=[];
   state.todos.forEach(function(t){
     /* 主待办过期处理 */
     if(!t.done&&t.date&&t.date<today){
       if(!t.repeat){
         /* 一次性待办过期 → 回到任务池（不显示具体日期，避免「昨天/前天」焦虑） */
         t.origDate=t.date;t.date=null;t.overdue=true;changed=true;
+      }else if(t.repeat==='consecutive'){
+        /* V.93：连续类型漏打 → 顺延到漏打日+2天（不删、不补卡）。
+           已在目标达成的连续系列不再顺延（停更）。循环外统一处理，避免 forEach 中改数组。 */
+        if(!consecutiveAchieved(t))rollList.push(t.id);
       }else{
         /* V.69：周期待办过期未完成 → 推进到下一期（advance），不卡在「昨天/前天」，
            也不丢系列锚点（refill 仍基于该期续期）。若推进目标日与同系列已有实例撞期
@@ -2164,6 +2235,12 @@ function migrateOverdue(){
         if(!sb.done&&sb.date&&sb.date<today){sb.origDate=sb.date;sb.date=null;sb.overdue=true;changed=true;}
       });
     });
+  });
+  /* V.93：连续类型漏打统一顺延（forEach 之后再改数组，安全） */
+  rollList.forEach(function(id){
+    var t=null;
+    for(var i=0;i<state.todos.length;i++)if(state.todos[i].id===id){t=state.todos[i];break;}
+    if(t&&!t.done){ rollConsecutiveMiss(t); changed=true; }
   });
   if(changed)save();
 }
@@ -2195,6 +2272,18 @@ function refillRepeat(t){
 function syncRepeatFuture(template, anchorDate, includeAnchor){
   if(!anchorDate)return;
   var target=repeatTarget(template.repeat);
+  /* V.93：连续类型累计完成达 N 天 → 目标达成，停更（不再补未来期），
+     保留一条 achieved 摘要实例，其余未完成期清理掉。 */
+  if(template.repeat==='consecutive'){
+    var _dn=repDoneCount('consecutive',template.text);
+    var _N=+(template.repeatCfg&&template.repeatCfg.days)||30;
+    if(_dn>=_N){
+      var _und=state.todos.filter(function(x){return x.repeat==='consecutive'&&x.text===template.text&&!x.done;});
+      _und.forEach(function(x,i){ if(i===0){x.achieved=true;} else {var _i=state.todos.indexOf(x); if(_i>=0)state.todos.splice(_i,1);} });
+      if(_und.length)save();
+      return;
+    }
+  }
   /* 推算目标日期集（含锚点或从其之后） */
   var dates=[];
   if(includeAnchor&&anchorDate)dates.push(anchorDate);
@@ -2277,7 +2366,10 @@ function ensureRepeats(){
        没有 done 时不主动推进 future，只清理多余的 undone（保留最早的 target 个）。 */
     var series=state.todos.filter(function(x){return x.repeat===t.repeat&&x.text===t.text;});
     var doneDates=series.filter(function(x){return x.done&&x.date;}).map(function(x){return x.date;});
-    if(doneDates.length){
+    if(doneDates.length && t.repeat!=='consecutive'){
+      /* V.93：连续类型不走「最大完成日 anchor」重生成——那会从旧完成日每天顺推，
+         覆盖掉顺延（+2）产生的间隔。连续系列的续期改由 migrateOverdue（漏打顺延）
+         + markDone（完成后续期）维护。 */
       var anchor=doneDates.reduce(function(m,d){return d>m?d:m;},'');
       syncRepeatFuture(t, anchor);
     }else{
@@ -2428,15 +2520,38 @@ function addStep(todoId,text,parentStepId){
 function toggleStep(stepId){
   var f=findStep(stepId);if(!f)return;
   var t=f.todo,s=f.step;
-  if(s.done){s.done=false;s.doneAt=null;recalcStepTodo(t);save();renderAll();return;}
+  /* V.88：noAuto —— 用户手动取消时，别被子步骤立刻推回「完成」 */
+  if(s.done){s.done=false;s.doneAt=null;s.autoDone=false;s.noAuto=true;recalcStepTodo(t);save();renderAll();return;}
   /* 无日期步骤：勾选完成前先选完成时间（与正常待办一致） */
   if(!s.date){openStepDoneDate(stepId);return;}
-  s.done=true;s.doneAt=todayStr();
+  s.done=true;s.doneAt=todayStr();s.autoDone=false;s.noAuto=false;
   recalcStepTodo(t);
   save();renderAll();
 }
+/* V.88：子步骤全部完成 → 父步骤也显示完成（PAM：「子步骤都完成，整个步骤也要显示完成」）
+   只联动「有子步骤」的那一层；用户手动勾完的无子步骤步骤不受影响。
+   autoDone 用来区分「被子步骤推着完成」和「用户自己勾的」——
+   取消一个子步骤时只回退前者，不会把用户手动勾的撤掉。 */
+function recalcStepDone(arr){
+  if(!arr||!arr.length)return false;
+  var changed=false;
+  arr.forEach(function(s){
+    if(s.sub&&s.sub.length){
+      if(recalcStepDone(s.sub))changed=true;
+      var all=s.sub.every(function(x){return x.done;});
+      /* noAuto：用户手动取消过这个步骤，就别再被子步骤推回完成 */
+      if(all&&!s.done&&!s.noAuto){
+        s.done=true;s.doneAt=s.doneAt||todayStr();s.autoDone=true;changed=true;
+      }else if(s.autoDone&&!all){
+        s.done=false;s.doneAt=null;s.autoDone=false;changed=true;
+      }
+    }
+  });
+  return changed;
+}
 /* 步骤完成状态变化后，回推父待办整条是否完成 */
 function recalcStepTodo(t){
+  recalcStepDone(t.steps);
   var allDone=t.steps.length&&t.steps.every(function(x){return x.done;});
   if(!t.done&&allDone){
     if(!t.date)openDoneDate(t.id);else markDone(t);
@@ -2479,7 +2594,14 @@ function stepClick(e){
   if(st){state.stepsOpen=(state.stepsOpen===st.dataset.steptoggle?null:st.dataset.steptoggle);renderAll();return true;}
   /* 子步骤面板 toggle（C 子步骤） */
   var sst=e.target.closest('[data-stepsubtoggle]');
-  if(sst){state.stepSubOpen=(state.stepSubOpen===sst.dataset.stepsubtoggle?null:sst.dataset.stepsubtoggle);renderAll();return true;}
+  /* V.88：子步骤全完成时走 subForceOpen（自动收起后想看就点这个按钮），其余照旧 */
+  if(sst){
+    var sid=sst.dataset.stepsubtoggle,f=findStep(sid);
+    var all=f&&f.step&&(f.step.sub||[]).length>0&&(f.step.sub||[]).every(function(x){return x.done;});
+    if(all)state.subForceOpen=(state.subForceOpen===sid?null:sid);
+    else state.stepSubOpen=(state.stepSubOpen===sid?null:sid);
+    renderAll();return true;
+  }
   /* V.56：D 子步骤面板 toggle */
   var sstSub=e.target.closest('[data-stepsubtoggle-sub]');
   if(sstSub){state.stepSubSubOpen=(state.stepSubSubOpen===sstSub.dataset.stepsubtoggleSub?null:sstSub.dataset.stepsubtoggleSub);renderAll();return true;}
@@ -2582,6 +2704,12 @@ function stepKey(e){
     }
     return true;
   }
+  /* V.88：周期组改名框（也带 st-edit 样式，必须排在步骤编辑框之前判断） */
+  if(cl.contains('rep-edit-in')&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){
+    e.preventDefault();
+    commitRepEdit(e.target.dataset.repeditin,e.target.value);
+    return true;
+  }
   /* 步骤编辑框：Enter 提交 / Shift+Enter 换行（点开本身已 focus） */
   if(cl.contains('st-edit')&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){
     e.preventDefault();
@@ -2649,6 +2777,19 @@ function deleteTodo(id){
   var t=null;
   for(var i=0;i<state.todos.length;i++)if(state.todos[i].id===id){t=state.todos[i];break;}
   if(!t)return;
+  if(t.repeat==='consecutive'&&!t.done){
+    /* V.93：连续类型「放下」= 等同未完成 → 顺延到漏打日+2天，不删任务、不补卡。
+       已目标达成的连续系列，放下=移除这条摘要。 */
+    if(consecutiveAchieved(t)){
+      if(!confirm('「'+t.text+'」已目标达成，放下这条摘要？'))return;
+      state.todos=state.todos.filter(function(x){return x.id!==id;});
+      if(state.todoEdit===id)state.todoEdit=null;
+      save();renderAll();return;
+    }
+    var nd=fmt(addDays(parse(t.date||todayStr()),2));
+    if(!confirm('连续打卡「'+t.text+'」今天先放下？\n不顺延、不中断，下次到期在 '+shortDate(nd)+'（漏打日+2天）'))return;
+    rollConsecutiveMiss(t);save();renderAll();return;
+  }
   if(!confirm('放下'+(t.done?'这段已做到的记录':'这件事')+'？\n「'+t.text+'」'))return;
   state.todos=state.todos.filter(function(x){return x.id!==id;});
   if(state.todoEdit===id)state.todoEdit=null;
@@ -3100,7 +3241,8 @@ function itemHtml(t,showSched,mode){
   var tag='';/* V.40：砍「补记」标签（PAM：「已完成」已够） */
   var rep='';
   if(!t.done&&t.repeat){
-    rep='<em class="rtag">'+(RT[t.repeat]||t.repeat)+'</em>';
+    var _ach=(t.repeat==='consecutive'&&consecutiveAchieved(t));
+    rep='<em class="rtag'+(_ach?' ach':'')+'">'+repTagText(t)+'</em>';
   }
   var od='';/* V.40：砍「过期 · MM-DD」标签（V.39 已迁回任务池，此处冗余） */
   var doneAtTag='';/* V.56：DONE 项显示 doneAt 时间标签（PAM：「看到 done 时间」）
@@ -3227,7 +3369,12 @@ function stepsHtmlFor(t){
       +'<button class="st-mtog'+(state.stepMulti?' on':'')+'" data-stepmulti="'+t.id+'">'+(state.stepMulti?'完成选择':'选择步骤')+'</button></div>';
   }
   h+='<div class="st-list">';
-  steps.forEach(function(s){
+  /* V.91：完成的步骤也要沉到底部（PAM 截图：「1，3都完成了但是没有隐藏到最后」）。
+     V.88 只给子步骤（s.sub）做了沉底，A 展开后的步骤列表还是原顺序——
+     PAM 说的「1、3」是步骤名（她给步骤编号），不是我以为的 D 层子步骤。
+     checklist 模式本来就把完成的整条跳过，不用排。 */
+  var stepList=(mode==='checklist')?steps:doneLast(steps);
+  stepList.forEach(function(s){
     if(mode==='checklist'&&s.done)return;
     var cbHtml=(state.stepMulti&&!s.done)
       ?'<span class="st-cb'+(state.stepPicked[s.id]?' on':'')+'" data-smpick="'+s.id+'"></span>'
@@ -3261,8 +3408,8 @@ function stepsHtmlFor(t){
         +'</span>'
         +'</div>'
       :'<span class="st-tx'+(s.done?' on':'')+'" data-steptx="'+s.id+'">'+esc(s.text)+'</span>';
-    /* 子步骤摘要按钮 */
-    var subOpen=state.stepSubOpen===s.id;
+    /* 子步骤摘要按钮（V.88：全完成时自动收起，见 subBoxOpen） */
+    var subOpen=subBoxOpen(s);
     var subTxt=subs.length?(subs.filter(function(x){return x.done;}).length+'/'+subs.length+' 子'):'分步骤';
     /* V.59：去掉 hasParentDate 条件——之前父待办没设日期时，B 步骤就只剩 📅、
        永远出不来「分步骤」按钮（PAM 截图红框）。细分入口只跟 B 自己有没有安排日期有关
@@ -3275,7 +3422,7 @@ function stepsHtmlFor(t){
        否则那些子步骤就永远看不到了），其余一律 false。 */
     var showSubBtn=subs.length>0;
     var subBtn=showSubBtn?'<button class="st-sub-btn'+(subOpen?' on':'')+'" data-stepsubtoggle="'+s.id+'" data-wid="'+t.id+'">'+subTxt+'</button>':'';
-    h+='<div class="st-item'+(scheduled?' scheduled':'')+(subOpen?' subopen':'')+'" data-sid="'+s.id+'" data-wid="'+t.id+'">'
+    h+='<div class="st-item'+(s.done?' s-done':'')+(scheduled?' scheduled':'')+(subOpen?' subopen':'')+'" data-sid="'+s.id+'" data-wid="'+t.id+'">'
       +'<span class="st-grip">⋮⋮</span>'+cbHtml
       +txHtml
       +dateHtml
@@ -3299,6 +3446,19 @@ function stepsHtmlFor(t){
   h+='</div>';
   return h;
 }
+/* V.88：已完成的排到最后（PAM「自动隐藏在子步骤中的最底位置」）。
+   稳定排序：未完成的彼此保持原顺序，不会乱跳。 */
+function doneLast(arr){
+  return (arr||[]).slice().sort(function(a,b){return (a.done?1:0)-(b.done?1:0);});
+}
+/* V.88：子步骤面板是否展开。全部完成 → 自动收起（PAM「自动隐藏在子步骤中」），
+   想看再点「x/x 子」按钮（那颗按钮改切 subForceOpen，见 stepsubtoggle handler）。
+   注意 stepsHtmlFor（B 步骤面板）和 stepItemHtml（C 步骤行）两处都要用。 */
+function subBoxOpen(s){
+  var subs=s.sub||[];
+  var all=subs.length>0&&subs.every(function(x){return x.done;});
+  return all?(state.subForceOpen===s.id):(state.stepSubOpen===s.id);
+}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function stepItemHtml(t,s,mode){
@@ -3320,7 +3480,8 @@ function stepItemHtml(t,s,mode){
   var subs=s.sub||[];
   /* V.84：PAM 澄清「C步骤右侧需要一个分步骤」。改 showSubBtn=hasDate（鸡生蛋 + C 走 stepItemHtml 不是 itemHtml） */
   var showSubBtn=hasDate&&!s.done;
-  var subOpen=state.stepSubOpen===s.id;
+  /* V.88：全完成自动收起（PAM「自动隐藏」） */
+  var subOpen=subBoxOpen(s);
   var subTxt=subs.length?(subs.filter(function(x){return x.done;}).length+'/'+subs.length+' 子'):'分步骤';
   /* V.42：恢复 dpIcon() 线条日历 SVG，砍 emoji + "+" 号（重复）
        未安排只显图标，已安排图标+日期文字
@@ -3354,7 +3515,8 @@ function stepItemHtml(t,s,mode){
   return h;
 }
 function stepSubBoxHtml(t,s){
-  var subs=s.sub||[];
+  /* V.88：PAM「变灰并且自动隐藏在子步骤中的最底位置」—— 已完成的沉到底部 */
+  var subs=doneLast(s.sub||[]);
   /* V.60：输入框放最上面（PAM：「C步骤添加子步骤的时候输入框又在最底下，要改成最上」）
      新加的就在手边，不用先滚过已有列表 */
   var h='<div class="st-sub-box">'
@@ -3375,7 +3537,7 @@ function subStepItemHtml(t,p,s){
   var txHtml=(state.stepEdit===s.id)
     ?'<textarea class="st-edit ta-grow" rows="1" data-stepedit-sub="'+s.id+'">'+esc(s.text)+'</textarea>'
     :'<span class="st-tx'+(s.done?' on':'')+'" data-steptx-sub="'+s.id+'">'+esc(s.text)+'</span>';
-  return '<div class="st-item sub-it'+(subSubOpen ?' subsubopen':'')+'" data-sid="'+s.id+'">'
+  return '<div class="st-item sub-it'+(s.done?' s-done':'')+(subSubOpen ?' subsubopen':'')+'" data-sid="'+s.id+'">'
     +'<span class="st-cb'+(s.done?' on':'')+'" data-substep="'+s.id+'"></span>'
     +txHtml
     +'<button class="st-sub-btn'+(subSubOpen?' on':'')+'" data-stepsubtoggle-sub="'+s.id+'" data-wid="'+t.id+'">'+subSubTxt+'</button>'
@@ -3384,7 +3546,7 @@ function subStepItemHtml(t,p,s){
   /* 注：删除子步骤入口在步骤面板的多选模式（数据迁移完成后启用）*/
 }
 function subSubBoxHtml(t,p,s){
-  var subs=s.sub||[];
+  var subs=doneLast(s.sub||[]);
   /* V.60：输入框放最上面（同 stepSubBoxHtml，PAM 要「最上」） */
   var h='<div class="st-sub-sub-box">'
     +'<div class="st-sub-sub-add">'
@@ -3422,6 +3584,18 @@ function stepDoneItemHtml(t,s,mode){
   }
   h+='</div>';
   return h;
+}
+/* V.88：DONE 清单里的已完成子步骤 —— 显示完整路径「A·B·C」。
+   复选框仍可点（data-substep 走 toggleStep），点一下就退回未完成。 */
+function subDoneItemHtml(x){
+  var t=x.todo||{};
+  var h='<div class="it done sub-done"><span class="cb on" data-substep="'+x.sub.id+'"></span>'
+    +'<span class="tx">'+esc(x.path)+'</span>';
+  var tArr=t.tags||[];
+  if(tArr.length){
+    h+='<div class="it-tags">'+tArr.map(function(y){return '<em class="ttag" '+tagStyle(y)+'>'+tclrDot(y)+'#'+esc(y)+'</em>';}).join('')+'</div>';
+  }
+  return h+'</div>';
 }
 function detailCols(ds,withAdd){
   var dones=doneOn(ds);
@@ -3560,14 +3734,18 @@ function dateLabel(ds){
   var rel=diff===0?'今天':diff===1?'明天':diff===-1?'昨天':diff===2?'后天':diff===-2?'前天':'';
   return (rel?rel+' · ':'')+(d.getMonth()+1)+'月'+d.getDate()+'日 '+WD[d.getDay()];
 }
-/* 周期待办：分组统计，供「周期待办」设置列表查看 */
+/* 周期待办：分组统计，供「周期待办」设置列表查看
+   V.88：多返回 rid（该组代表待办 id），供顶部列表的「改」直接打开周期设置面板 */
 function repeatSeries(){
   var m={};
   state.todos.forEach(function(t){
     if(!t.repeat)return;
     var k=t.repeat+'|'+t.text;
-    if(!m[k])m[k]={text:t.text,repeat:t.repeat,undone:[],done:0};
-    if(t.done)m[k].done++;else if(t.date)m[k].undone.push(t.date);
+    var g=m[k];
+    if(!g){g=m[k]={text:t.text,repeat:t.repeat,undone:[],done:0,rid:t.id};}
+    /* 代表待办优先取「未完成」的：在周期设置里锚在未完成那期上更直观 */
+    if(!t.done)if(!g.ridUndone){g.ridUndone=t.id;g.rid=t.id;}
+    if(t.done)g.done++;else if(t.date)g.undone.push(t.date);
   });
   return Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){
     var a0=a.undone.slice().sort()[0]||'',b0=b.undone.slice().sort()[0]||'';
@@ -3583,18 +3761,54 @@ function renderRepeatList(){
   }else{
     series.forEach(function(s){
       var label=(RT[s.repeat]||s.repeat);
+      var _dn=repDoneCount(s.repeat,s.text);
+      var _rl=label;
+      if(s.repeat==='consecutive'){
+        var _cfg=null;
+        state.todos.forEach(function(x){ if(x.repeat==='consecutive'&&x.text===s.text&&x.repeatCfg)_cfg=x.repeatCfg; });
+        var _N=_cfg?(_cfg.days||30):30;
+        _rl=(_dn>=_N)?'目标达成 ✓':'连续 '+_N+' 天';
+      }
       var dates=s.undone.slice().sort();
       var n=repeatTarget(s.repeat);
       var nxt=dates.slice(0,n).map(shortDate).join('、');
       h+='<div class="rep-item">'
-        +'<span class="rep-tx">'+esc(s.text)+'</span>'
-        +'<em class="rtag">'+label+'</em>'
+        /* V.88：PAM「不用显示『改』，直接在前面编辑内容框里面修改就好」——
+           点名字就地变输入框，回车或点别处保存，整组（所有期）一起改名。
+           改名要动全组，因为周期分组的 key 就是「周期+名字」。 */
+        +(state.repEdit===(s.repeat+'|'+s.text)
+          ?'<textarea class="st-edit ta-grow rep-edit-in" rows="1" data-repeditin="'+escAttr(s.repeat+'|'+s.text)+'">'+esc(s.text)+'</textarea>'
+          :'<span class="rep-tx" data-repedit="'+escAttr(s.repeat+'|'+s.text)+'">'+esc(s.text)+'</span>')
+        /* V.90：频率标签也能点 —— 点「每周」打开周期设置，整组所有期一起换频率。
+           PAM 原话是「周期待办可以直接在顶部统一显示的时候直接修改」，
+           上次只做了改名字，改频率才是"修改"的重头。 */
+        +'<em class="rtag" data-repcycle="'+escAttr(s.rid)+'">'+_rl+' · 已打卡 '+_dn+' 次</em>'
         +'<button class="rep-del" data-repdel="'+escAttr(s.text)+'" data-rep="'+s.repeat+'">放下整组</button>'
         +'<span class="rep-dates">最近 '+n+' 期：'+(nxt||'—')+(dates.length>n?' · 共 '+dates.length+' 期':'')+'</span>'
         +'</div>';
     });
   }
   return h+'</div></div>';
+}
+/* V.88：周期组改名 —— key 形如「周期|原名字」，整组所有期一起改
+   （不改全组的话，改完名字的那期会被当成另一组，续期和统计都会乱） */
+function commitRepEdit(key,text){
+  var i=String(key||'').indexOf('|');
+  state.repEdit=null;
+  if(i<0){renderTodo();return;}
+  var repeat=key.slice(0,i),old=key.slice(i+1);
+  text=(text||'').trim();
+  if(text&&text!==old){
+    state.todos.forEach(function(t){
+      if(t.repeat===repeat&&t.text===old)t.text=text;
+    });
+    save();
+  }
+  renderTodo();
+}
+function focusRepEdit(){
+  var el=(typeof todoList!=='undefined'&&todoList&&todoList.querySelector)?todoList.querySelector('.rep-edit-in'):null;
+  if(el){el.focus();var v=el.value;el.value='';el.value=v;}
 }
 function deleteRepeatSeries(text,repeat){
   if(!confirm('放下整个周期「'+text+'」？\n会移除这一组的所有待办。'))return;
@@ -3787,7 +4001,9 @@ function renderTodo(){
   /* 多选工具条 */
   h+='<div class="multi-bar">'
     +'<button class="multi-tog'+(state.todoMulti?' on':'')+'" data-tmultitoggle="1">'+(state.todoMulti?'完成选择':'选择')+'</button>'
-    +'<button class="rep-open-btn'+(state.repOpen?' on':'')+'" data-reptoggle="1">周期待办</button>';
+    +'<button class="rep-open-btn'+(state.repOpen?' on':'')+'" data-reptoggle="1">周期待办</button>'
+    /* V.88：PAM「除了当天待办，其余日期待办可一键隐藏（打开）」 */
+    +'<button class="rep-open-btn'+(state.todayOnly?' on':'')+'" data-todayonly="1">只看今天</button>';
   if(state.todoMulti){
     var pickedN=state.todos.filter(function(t){return !t.done&&state.todoPicked[t.id];}).length;
     h+='<span class="multi-n">已选 '+pickedN+' 项</span>'
@@ -3815,41 +4031,69 @@ function renderTodo(){
   });
   var dateKeys=Object.keys(byDate).concat(Object.keys(byStep));
   var dates=dateKeys.filter(function(x,i,a){return a.indexOf(x)===i;}).sort();
-  dates.forEach(function(ds){
+  /* V.88：PAM「除了当天待办，其余日期待办可一键隐藏（打开）」——
+     开启「只看今天」时，其余日期不再逐个铺开，收成一行「其余 N 天 · M 件」，点一下展开。
+     注意：今天之前（过期未完成）的日期也算「其余」，一起收进去。 */
+  var dayBlock=function(ds){
     var undone=(byDate[ds]||[]).filter(function(t){return !t.done;});
     undone=pinnedFirst(undone);
     var steps=byStep[ds]||[];
-    if(undone.length||steps.length){
-      h+='<div class="tg"><div class="tg-h">'+dateLabel(ds)+'<small>'+lunarFull(parse(ds))+'</small></div>'
-        +'<div class="tg-card">'
-        /* V.70：已安排区块 day-grouped —— 栏头已有日期 + 农历，条目不再重显 dateHtml
-           V.71：模式从 'cal' 改为 'grp'——'cal' 连 [每月] 重复标签和「步骤 x/y」入口一起清掉了
-           （PAM：「重复待办右侧没有步骤」）。'grp' 只压日期，其余全保留。 */
-        +undone.map(function(t){return itemHtml(t,false,'grp');}).join('')
-        +steps.map(function(x){return stepItemHtml(x.todo,x.step,'grp');}).join('')
-        +'</div></div>';
-    }
+    if(!undone.length&&!steps.length)return '';
+    return '<div class="tg"><div class="tg-h">'+dateLabel(ds)+'<small>'+lunarFull(parse(ds))+'</small></div>'
+      +'<div class="tg-card">'
+      +undone.map(function(t){return itemHtml(t,false,'grp');}).join('')
+      +steps.map(function(x){return stepItemHtml(x.todo,x.step,'grp');}).join('')
+      +'</div></div>';
+  };
+  var today=todayStr();
+  dates.forEach(function(ds){
+    if(state.todayOnly&&ds!==today)return;
+    h+=dayBlock(ds);
   });
+  if(state.todayOnly){
+    var rest=dates.filter(function(ds){return ds!==today;});
+    var restN=rest.reduce(function(a,ds){
+      return a+(byDate[ds]||[]).filter(function(t){return !t.done;}).length+(byStep[ds]||[]).length;
+    },0);
+    if(rest.length){
+      h+='<div class="tg">'
+        +'<div class="tg-h future-h" data-futureopen="1">'
+        +(state.futureOpen?'&#9662;':'&#9656;')
+        +' 其余 '+rest.length+' 天 · '+restN+' 件'
+        +'<small>'+(state.futureOpen?'收起':'展开')+'</small></div>'
+        +(state.futureOpen?rest.map(dayBlock).join(''):'')
+        +'</div>';
+    }
+  }
   var stepDoneAll=allDoneSteps();
+  var subDoneAll=allDoneSubs();/* V.88：已完成的子步骤也进 DONE（显示 A·B·C） */
   var doneAll=state.todos.filter(function(t){return t.done;});
-  if(doneAll.length||stepDoneAll.length){
+  var doneTotal=doneAll.length+stepDoneAll.length+subDoneAll.length;
+  if(doneTotal){
     h+='<div class="done-banner done-toggle'+(state.doneOpen?'':' closed')+'">'
-      +'<span class="chev">&#9662;</span> DONE · 做到了 '+(doneAll.length+stepDoneAll.length)+' 件'
+      +'<span class="chev">&#9662;</span> DONE · 做到了 '+doneTotal+' 件'
       +'<button class="done-label-btn" data-dlabel="1">'+(state.donePick?'退出':'归类')+'</button></div>';
     var stepDoneGroupHtml=function(){
+      /* V.88：已完成步骤（A·B）与已完成子步骤（A·B·C）混在同一个按日期分组里 */
       var by={};
+      var push=function(k,html){(by[k]=by[k]||[]).push(html);};
       /* V.72：按当前筛选标签过滤已完成步骤（旧版筛选时整块不显示，
          导致 chip 里点了「只有步骤带」的标签 → 0 结果，很困惑） */
       var list=stepDoneAll;
       if(state.doneTagQuery){
         list=list.filter(function(x){return ((x.todo&&x.todo.tags)||[]).indexOf(state.doneTagQuery)>=0;});
       }
-      list.forEach(function(x){var k=stepDoneKey(x.step)||todayStr();(by[k]=by[k]||[]).push(x);});
+      list.forEach(function(x){push(stepDoneKey(x.step)||todayStr(),stepDoneItemHtml(x.todo,x.step,'grp'));});
+      var sList=subDoneAll;
+      if(state.doneTagQuery){
+        sList=sList.filter(function(x){return ((x.todo&&x.todo.tags)||[]).indexOf(state.doneTagQuery)>=0;});
+      }
+      sList.forEach(function(x){push(subDoneKey(x),subDoneItemHtml(x));});
       var out='';
       Object.keys(by).sort().forEach(function(ds){
         out+='<div class="tg"><div class="tg-h">'+dateLabel(ds)+'</div>'
           /* V.70：已完成步骤 day-grouped —— 栏头已有日期，条目不重显 dateHtml（V.71 改 'grp'） */
-          +'<div class="tg-card">'+by[ds].map(function(x){return stepDoneItemHtml(x.todo,x.step,'grp');}).join('')+'</div></div>';
+          +'<div class="tg-card">'+by[ds].join('')+'</div></div>';
       });
       return out;
     };
@@ -3932,7 +4176,130 @@ function renderTodo(){
   }
 }
 
-function renderAll(){syncBirthdays();migrateOverdue();renderCal();renderTodo();renderDays();bindAutoGrow(document);}
+/* ================= V.86：ITCOUNTS 年度完成度地图 =================
+   PAM 定的方向：一年做到多少、哪天做的、连续了多久。
+   口径（PAM 产品魂「每一步都算数」）：一条待办如果分了步骤，就按**完成的步骤数**算
+   ——步骤才是你真正做的事；没分步骤的，按待办本身算一件。
+   ⚠ 不能父待办和步骤都算：markDone 会把未完成步骤一起标 done，那样一条会算成好几件。 */
+function itcYearStat(y){
+  var map={},total=0;
+  state.todos.forEach(function(t){
+    var steps=(t.steps||[]).filter(function(s){return s.done;});
+    if(steps.length){
+      steps.forEach(function(s){
+        var k=stepDoneKey(s);
+        if(k&&k.indexOf(y+'-')===0){map[k]=(map[k]||0)+1;total++;}
+      });
+    }else if(t.done){
+      var k=doneKey(t);
+      if(k&&k.indexOf(y+'-')===0){map[k]=(map[k]||0)+1;total++;}
+    }
+  });
+  return {map:map,total:total};
+}
+/* 当前连续：今天还没做就从昨天往前算（今天还没过完，不该断） */
+function itcCurStreak(map,y){
+  var d=new Date();
+  if(fmt(d).indexOf(y+'-')!==0)return 0;
+  if(!map[fmt(d)])d=addDays(d,-1);
+  var n=0;
+  while(fmt(d).indexOf(y+'-')===0&&map[fmt(d)]){n++;d=addDays(d,-1);}
+  return n;
+}
+function itcLongest(map,y){
+  var best=0,run=0;
+  var d=new Date(y,0,1),end=new Date(y,11,31);
+  while(d<=end){
+    if(map[fmt(d)]){run++;if(run>best)best=run;}else run=0;
+    d=addDays(d,1);
+  }
+  return best;
+}
+function itcHeat(map,y){
+  var today=todayStr(),h='';
+  for(var m=1;m<=12;m++){
+    var days=new Date(y,m,0).getDate();
+    h+='<div class="itc-row"><span class="itc-m">'+m+'</span><div class="itc-cells">';
+    for(var dd=1;dd<=days;dd++){
+      var k=y+'-'+pad(m)+'-'+pad(dd);
+      var n=map[k]||0;
+      var lv=n===0?0:(n===1?1:(n<=2?2:(n<=4?3:4)));
+      var cls='itc-c lv'+lv+(k>today?' fut':'')+(k===today?' today':'');
+      h+='<i class="'+cls+'" data-itcd="'+k+'" data-itcn="'+n+'"></i>';
+    }
+    h+='</div></div>';
+  }
+  return h;
+}
+var itcYear=new Date().getFullYear();
+var itcLastSig='';
+function renderItc(force){
+  var el=document.getElementById('itcWrap');
+  if(!el)return;
+  var y=itcYear,st=itcYearStat(y);
+  /* renderAll 每次操作都跑，365 格 DOM 不该无脑重建：数据没变就跳过 */
+  var sig=y+'|'+JSON.stringify(st.map);
+  if(!force&&sig===itcLastSig)return;
+  itcLastSig=sig;
+  var cur=itcCurStreak(st.map,y),best=itcLongest(st.map,y);
+  var nowY=new Date().getFullYear();
+  var h='<div class="itc-year">'
+    +'<button data-itcy="-1"'+(y<=2020?' disabled':'')+'>&lsaquo;</button>'
+    +'<span class="y">'+y+'</span>'
+    +'<button data-itcy="1"'+(y>=nowY?' disabled':'')+'>&rsaquo;</button>'
+    +'</div>';
+  h+='<div class="itc-nums">'
+    +'<div class="itc-num"><div class="v">'+st.total+'</div><div class="l">做到</div></div>'
+    +'<div class="itc-num"><div class="v">'+cur+'<small>天</small></div><div class="l">连续</div></div>'
+    +'<div class="itc-num"><div class="v">'+best+'<small>天</small></div><div class="l">最长</div></div>'
+    +'</div>';
+  if(st.total){
+    h+='<div class="itc-heat"><div class="itc-hd"><span>一年里每一天</span>'
+      +'<span class="itc-legend">少<i class="itc-c lv1"></i><i class="itc-c lv2"></i><i class="itc-c lv3"></i><i class="itc-c lv4"></i>多</span>'
+      +'</div>'+itcHeat(st.map,y)+'</div>';
+    h+='<div class="itc-foot">一格是一天，颜色越深那天做得越多。<br>'
+      +'分了步骤的待办，按<b>完成的步骤</b>算——每一步都算数。</div>';
+  }else{
+    h+='<div class="itc-empty">'+y+' 年还没有记录。<br>完成一件待办，这里就会亮起来。</div>';
+  }
+  el.innerHTML=h;
+}
+function renderAll(){syncBirthdays();fixStepDoneOnce();migrateOverdue();renderCal();renderTodo();renderDays();renderItc();bindAutoGrow(document);}
+/* V.89：老数据补齐「子步骤全完成 → 父步骤也完成」。
+   背景：V.88 才有这条联动，之前的数据里可能留着「子步骤全勾完、父步骤却还没完成」的状态，
+   而 V.88 只在「你勾子步骤那一刻」触发 —— 老数据打开 app 还是老样子，得再勾一次才对。
+   所以启动时补一遍。
+   ⚠ 只跑 recalcStepDone（步骤层），**不**跑 recalcStepTodo ——
+     后者在整条待办没有日期时会弹「选完成日期」弹窗，一开 app 就弹窗很糟。
+   ⚠ 定义要放在 renderAll 之后：test-tags / test-bd-notif 会 slice「数据操作段 → function renderAll()」
+     那段源码去 eval，放在前面会进 slice 区间（函数声明本身不执行没事，但没必要冒险）。 */
+function fixStepDoneOnce(){
+  if(state._sdFix)return;
+  state._sdFix=true;
+  var changed=false;
+  state.todos.forEach(function(t){
+    if(t.steps&&t.steps.length&&recalcStepDone(t.steps))changed=true;
+  });
+  if(changed)save();
+}
+/* V.86：屏4 年份切换 + 点格子看那天做了几件。
+   ⚠ 必须放在 renderAll() 之后：test-tags.js / test-bd-notif.js 会 slice
+   「数据操作段 → function renderAll()」之间的源码拿去 eval，那段桩里的 document
+   只有 getElementById、没有 addEventListener，顶层监听落进区间就会
+   `document.addEventListener is not a function` 直接崩。 */
+document.addEventListener('click',function(e){
+  if(!e.target||!e.target.closest)return;
+  var c=e.target.closest('[data-itcy]');
+  if(c&&!c.disabled){itcYear+=parseInt(c.dataset.itcy,10);renderItc(true);return;}
+  var d=e.target.closest('[data-itcd]');
+  if(d){
+    /* V.87：点有记录的日子直接跳到日历那天（弹 alert 太笨）；
+       空格子没有可看的，才提示一下。 */
+    var n=parseInt(d.dataset.itcn,10),k=d.dataset.itcd;
+    if(!n){alert(k+' · 这天是空的');return;}
+    setTab(0);setView('day',k);
+  }
+});
 /* 全局委托：任意 .ta-grow 输入/粘贴/删除时实时撑高（一步到位，无需每次重渲染） */
 document.addEventListener('input',function(e){
   var t=e.target;
@@ -3975,10 +4342,83 @@ function seedDays(){
     {id:uid(),date:D(0),time:nowTime(),title:'原型第三版跑通',tags:['ITCOUNTS','里程碑'],text:'任务池、周期任务、MY DAYS! 都有雏形了，一天可以记很多笔。',photos:[proto].filter(Boolean),audio:null,at:Date.now()}
   ];
 }
+/* V.94：照片/录音搬出小盒子，存进 IndexedDB 大仓库（按 id 取回），小盒子只留文字+引用。
+   这样小盒子永远很小、永远写得进，整篇日记（含文字）不再因照片撑爆而丢失。 */
+var MEDIA_IDB='itcounts-media-idb', MEDIA_IDB_VER=1;
+function idbAvailable(){ try{ return typeof indexedDB!=='undefined' && indexedDB!==null; }catch(e){ return false; } }
+function hashStr(s){ var h=5381; for(var i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h.toString(36); }
+function idbOpenMedia(cb){
+  try{
+    var req=indexedDB.open(MEDIA_IDB,MEDIA_IDB_VER);
+    req.onupgradeneeded=function(){ var db=req.result; if(!db.objectStoreNames.contains('media'))db.createObjectStore('media',{keyPath:'id'}); };
+    req.onsuccess=function(){ cb(req.result); };
+    req.onerror=function(){ cb(null); };
+  }catch(e){ cb(null); }
+}
+function idbPutMedia(id,url){
+  idbOpenMedia(function(db){ if(!db)return; try{
+    var tx=db.transaction('media','readwrite'); var st=tx.objectStore('media');
+    st.put({id:id,url:url});
+  }catch(e){} });
+}
+function idbGetMedia(id,cb){
+  idbOpenMedia(function(db){ if(!db){cb(null);return;} try{
+    var tx=db.transaction('media','readonly'); var st=tx.objectStore('media');
+    var r=st.get(id); r.onsuccess=function(){ cb(r.result?r.result.url:null); }; r.onerror=function(){ cb(null); };
+  }catch(e){ cb(null); } });
+}
+/* 纯函数：把含 data: 媒体 URL 的 entries 变成「小盒子版」（媒体换成 idb:<hash> 引用），
+   同时返回 url->id 映射。非 media 字符串原样保留。 */
+function liteEntries(entries){
+  var map={};
+  function mid(url){
+    if(typeof url!=='string'||url.indexOf('data:')!==0)return url;
+    if(map[url])return 'idb:'+map[url];
+    var id=hashStr(url); map[url]=id; return 'idb:'+id;
+  }
+  var lite=(entries||[]).map(function(e){
+    var c={}; for(var k in e){ if(e.hasOwnProperty(k))c[k]=e[k]; }
+    if(Array.isArray(e.photos))c.photos=e.photos.map(mid);
+    if(e.audio){ var a=e.audio;
+      if(a&&typeof a==='object'){ c.audio={}; for(var ak in a){ if(a.hasOwnProperty(ak))c.audio[ak]=a[ak]; } if(typeof a.src==='string')c.audio.src=mid(a.src); }
+      else if(typeof a==='string')c.audio=mid(a);
+    }
+    return c;
+  });
+  return {lite:lite, media:map};
+}
+/* 纯函数：用 url->id 映射把「小盒子版」还原回完整 data URL（确定性，便于测试）。 */
+function applyMediaMap(lite, map){
+  function und(ref){ if(typeof ref==='string'&&ref.indexOf('idb:')===0){ var id=ref.slice(4); for(var u in map){ if(map[u]===id)return u; } } return ref; }
+  return (lite||[]).map(function(e){
+    var c={}; for(var k in e){ if(e.hasOwnProperty(k))c[k]=e[k]; }
+    if(Array.isArray(e.photos))c.photos=e.photos.map(und);
+    if(e.audio){ var a=e.audio;
+      if(a&&typeof a==='object'){ c.audio={}; for(var ak in a){ if(a.hasOwnProperty(ak))c.audio[ak]=a[ak]; } if(typeof a.src==='string')c.audio.src=und(a.src); }
+      else if(typeof a==='string')c.audio=und(a);
+    }
+    return c;
+  });
+}
 function saveDays(){
-  try{localStorage.setItem('itcounts-days-v2',JSON.stringify(state.entries));}
-  catch(e){alert('本地存储已满（照片或音频较大），原型仅作演示，刷新后新内容可能丢失');}
-  /* V.52+：日记变动也触发备份 */
+  if(!idbAvailable()){
+    /* 极少数环境（无 IndexedDB）：退回旧逻辑，整个条目直接写小盒子（可能仍受 5MB 限制，但至少可用） */
+    try{ localStorage.setItem('itcounts-days-v2',JSON.stringify(state.entries)); }
+    catch(e){ alert('本地存储已满（内容较多），请点备份面板导出生存备份，或清理部分日记'); }
+    if(typeof scheduleAutoBackup==='function')scheduleAutoBackup();
+    return;
+  }
+  var r=liteEntries(state.entries);
+  var json=null;
+  try{ json=JSON.stringify(r.lite); }catch(e){ json=null; }
+  try{
+    if(json)localStorage.setItem('itcounts-days-v2', json);
+  }catch(e){
+    /* 理论不会发生（小盒子只剩文字），但保险 */
+    alert('本地存储异常，请导出生存备份');
+  }
+  /* 媒体异步存进大仓库（按 id） */
+  try{ Object.keys(r.media).forEach(function(url){ idbPutMedia(r.media[url], url); }); }catch(e){}
   if(typeof scheduleAutoBackup==='function')scheduleAutoBackup();
 }
 function loadDays(){
@@ -3987,6 +4427,31 @@ function loadDays(){
     if(s){var arr=JSON.parse(s);if(Array.isArray(arr))return arr;}
   }catch(e){}
   return null;
+}
+/* 启动后把小盒子里的媒体引用（idb:<id>）从大仓库取回真实 data URL，写回 state.entries。
+   完成后回调 cb（用于触发自动备份，确保备份含完整媒体）。 */
+function hydrateDaysMedia(cb){
+  if(typeof cb!=='function')cb=function(){};
+  if(!idbAvailable()){cb();return;}
+  if(!state.entries||!state.entries.length){cb();return;}
+  var pending=0, done=function(){ if(pending<=0){ try{renderDays();}catch(e){} cb(); } };
+  state.entries.forEach(function(e){
+    (e.photos||[]).forEach(function(p,i){
+      if(typeof p==='string'&&p.indexOf('idb:')===0){
+        pending++; var mid2=p.slice(4);
+        idbGetMedia(mid2, function(url){ if(url)e.photos[i]=url; pending--; done(); });
+      }
+    });
+    var a=e.audio;
+    if(a){
+      var src=(a&&typeof a==='object')?(typeof a.src==='string'?a.src:null):(typeof a==='string'?a:null);
+      if(typeof src==='string'&&src.indexOf('idb:')===0){
+        pending++; var aid=src.slice(4);
+        idbGetMedia(aid, function(url){ if(url){ if(a&&typeof a==='object')a.src=url; else e.audio=url; } pending--; done(); });
+      }
+    }
+  });
+  done();
 }
 /* ---------- 备份与恢复（全量：待办+日记+开屏） ---------- */
 /* V.52+：共享备份走「系统分享菜单」入口（替代固定下载目录，避免找不到）；
@@ -4305,7 +4770,7 @@ function dayHead(ds){
 }
 function entryHtml(e){
   var cb=state.pickMode?'<span class="cb'+(state.picked[e.id]?' on':'')+'" data-pid="'+e.id+'"></span>':'';
-  var h='<div class="ent">'
+  var h='<div class="ent" id="ent-'+e.id+'">'
     +'<div class="ent-t">'+cb+'<span class="tm">'+e.time+'</span><b>'+esc(e.title)+'</b></div>';
   if(!state.pickMode)h+='<button class="ent-edit" data-eid="'+e.id+'">&#9998; 编辑</button>';
   if(e.tags&&e.tags.length){
@@ -4526,24 +4991,29 @@ function commitNote(){
     var line=text.split('\n')[0];
     title=line?line.slice(0,24):'此刻';
   }
+  var savedId;
   if(d.editId){
     for(var i=0;i<state.entries.length;i++){
       if(state.entries[i].id===d.editId){
         var e=state.entries[i];
         e.time=d.time||nowTime();e.title=title;e.tags=d.tags.slice();
         e.photos=d.photos.slice();e.audio=d.audio;e.text=text;e.at=Date.now();
-        break;
+        savedId=d.editId;break;
       }
     }
   }else{
-    state.entries.push({id:uid(),date:d.date,time:nowTime(),title:title,tags:d.tags.slice(),photos:d.photos.slice(),audio:d.audio,text:text,at:Date.now()});
+    savedId=uid();
+    state.entries.push({id:savedId,date:d.date,time:nowTime(),title:title,tags:d.tags.slice(),photos:d.photos.slice(),audio:d.audio,text:text,at:Date.now()});
   }
   saveDays();
-  daysToast('已记下 ✓ 时空隧道里见');
+  var _hasM=(d.photos&&d.photos.length)||d.audio;
   var ds=d.date;
   resetNote();
   state.dayOpen=ds;
+  setTab(2);
   renderDays();
+  flashEntry(savedId);
+  daysToast(_hasM?'已保存 ✓ 文字存手机本机 · 照片存本机大仓库':'已保存 ✓ 文字已存手机本机', {label:'导出这篇 ▸', fn:function(){ exportEntryFile(savedId); }});
 }
 noteEl.addEventListener('click',function(e){
   var t=e.target;
@@ -4707,14 +5177,48 @@ document.getElementById('tunnelBtn').addEventListener('click',openTunnel);
 document.getElementById('tunnelClose').addEventListener('click',closeTunnel);
 /* 记录成功的轻提示 */
 var toastEl=null,toastTimer=null;
-function daysToast(msg){
+function daysToast(msg, action){
   var ph=document.querySelector('.phone');
   if(!ph)return;
   if(!toastEl){toastEl=document.createElement('div');toastEl.className='tn-toast';ph.appendChild(toastEl);}
-  toastEl.textContent=msg;
+  toastEl.innerHTML='';
+  var sp=document.createElement('span'); sp.className='tn-toast-msg'; sp.textContent=msg; toastEl.appendChild(sp);
+  if(action){
+    var ab=document.createElement('button'); ab.type='button'; ab.className='tn-toast-act'; ab.textContent=action.label;
+    ab.addEventListener('click',function(){ clearTimeout(toastTimer); toastEl.classList.remove('show'); try{action.fn();}catch(e){} });
+    toastEl.appendChild(ab);
+  }
   toastEl.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(function(){toastEl.classList.remove('show');},2200);
+  toastTimer=setTimeout(function(){ toastEl.classList.remove('show'); }, action?4200:2200);
+}
+function flashEntry(id){
+  try{
+    var el=document.getElementById('ent-'+id);
+    if(!el)return;
+    if(el.scrollIntoView)el.scrollIntoView({block:'center',behavior:'smooth'});
+    el.classList.add('ent-flash');
+    setTimeout(function(){ try{el.classList.remove('ent-flash');}catch(e){} },1800);
+  }catch(e){}
+}
+function exportEntryFile(id){
+  var e=null;
+  for(var i=0;i<state.entries.length;i++){ if(state.entries[i].id===id){ e=state.entries[i]; break; } }
+  if(!e){ alert('没找到这篇，可能已删除'); return; }
+  var obj={app:'itcounts-note', kind:'entry', exportedAt:new Date().toISOString(), entry:e};
+  var safe=(e.title||'myday').replace(/[^\w一-龥-]+/g,'_').slice(0,30);
+  var name='ITCOUNTS-'+e.date+'-'+safe+'.json';
+  var blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+  try{
+    var file=new File([blob],name,{type:'application/json'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      navigator.share({files:[file],title:'MY DAYS 一篇',text:name}).catch(function(){});
+      return;
+    }
+  }catch(e){}
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ try{URL.revokeObjectURL(a.href);a.remove();}catch(e){} },1000);
 }
 function updateTunnelCount(){
   var el=document.getElementById('tunnelCount');
@@ -4728,20 +5232,27 @@ function commitEntry(){
   if(!d||!d.active)return;
   var title=d.title.trim();
   if(!title){d.err=true;renderDays();var el=daysList.querySelector('.ef-title');if(el)el.focus();return;}
+  var savedId;
   if(d.editId){
     for(var i=0;i<state.entries.length;i++){
       if(state.entries[i].id===d.editId){
         var e=state.entries[i];
         e.time=d.time||nowTime();e.title=title;e.tags=d.tags.slice();
         e.photos=d.photos.slice();e.audio=d.audio;e.text=d.text.trim();e.at=Date.now();
-        break;
+        savedId=d.editId;break;
       }
     }
   }else{
-    state.entries.push({id:uid(),date:d.date,time:d.time||nowTime(),title:title,tags:d.tags.slice(),photos:d.photos.slice(),audio:d.audio,text:d.text.trim(),at:Date.now()});
+    savedId=uid();
+    state.entries.push({id:savedId,date:d.date,time:d.time||nowTime(),title:title,tags:d.tags.slice(),photos:d.photos.slice(),audio:d.audio,text:d.text.trim(),at:Date.now()});
   }
+  var _hasM=(d.photos&&d.photos.length)||d.audio;
   state.draft={active:false};
-  saveDays();renderDays();
+  saveDays();
+  setTab(2);
+  renderDays();
+  flashEntry(savedId);
+  daysToast(_hasM?'已保存 ✓ 文字存手机本机 · 照片存本机大仓库':'已保存 ✓ 文字已存手机本机', {label:'导出这篇 ▸', fn:function(){ exportEntryFile(savedId); }});
 }
 /* ---------- 一键长图 ---------- */
 function loadImg(src){return new Promise(function(res){var im=new Image();im.onload=function(){res(im);};im.onerror=function(){res(null);};im.src=src;});}
@@ -5294,6 +5805,7 @@ function renderBkPanel(){
   var h='<div class="bk-mask" data-bk="close"></div><div class="bk-card">'
     +'<div class="bk-head"><b>数据与备份</b><button data-bk="close">&times;</button></div>'
     +'<div class="bk-stats">待办 '+state.todos.length+' 条（含完成 '+doneN+'）· 日记 '+state.entries.length+' 篇 · 开屏 '+splash.templates.length+' 模板</div>'
+    +'<div class="bk-item"><span>日记存在哪</span><b>这部手机本机<br><small style="color:var(--faint)">（ITCOUNTS 应用内，不上传任何云端）</small></b></div>'
     /* V.73：把「数据安全」的承诺改成**诚实版**。
        旧文案说自动快照「更稳，清网站数据不影响」——这在**换链接/换域名**面前是假的：
        localStorage 和 IndexedDB 都按域名隔离，链接一换全部读不到（2026-09-08 已发生，
@@ -5317,7 +5829,7 @@ function renderBkPanel(){
     +'含照片/录音。文件在哪取决于浏览器：在「下载」App 或文件管理里搜 <b>itcounts-backup</b> 就能找到。</div>'
     +'<div class="bk-tip"><b>恢复：</b>在面板点「导入恢复（选文件）」选备份文件；或点「从文字恢复」把之前复制的文字粘回来。</div>'
     +'<button class="bk-btn" data-bk="exporttext" style="background:var(--accent);color:#fff;font-weight:700">📋 复制文字版（能存进微信收藏）</button>'
-    +'<button class="bk-btn" data-bk="export">📤 一键备份到本地（含照片）</button>'
+    +'<button class="bk-btn" data-bk="export" style="background:var(--accent);color:#fff;font-weight:700">📤 导出全部备份（含照片）</button>'
     +'<button class="bk-btn" data-bk="import">📥 导入恢复（选文件）</button>'
     +'<button class="bk-btn light" data-bk="importtext">📝 从文字恢复（粘贴）</button>'
     +'<button class="bk-btn light" data-bk="share">📱 分享到微信收藏/网盘（多数手机不支持）</button>'
@@ -5649,7 +6161,7 @@ daysList.addEventListener('change',function(e){
     for(var i=0;i<fs.length;i++)(function(f){
       var fr=new FileReader();
       fr.onload=function(){
-        if(state.draft&&state.draft.active){state.draft.photos.push(fr.result);saveDays();renderDays();}
+        if(state.draft&&state.draft.active){state.draft.photos.push(fr.result);renderDays();}
       };
       fr.readAsDataURL(f);
     })(fs[i]);
@@ -5658,7 +6170,7 @@ daysList.addEventListener('change',function(e){
     if(!f)return;
     var fr2=new FileReader();
     fr2.onload=function(){
-      if(state.draft&&state.draft.active){state.draft.audio={name:f.name,src:fr2.result};saveDays();renderDays();}
+      if(state.draft&&state.draft.active){state.draft.audio={name:f.name,src:fr2.result};renderDays();}
     };
     fr2.readAsDataURL(f);
   }
@@ -5785,6 +6297,52 @@ function newRepeatCfg(){
     yearlyAdvance:7         // 每年提前几天提醒（含生日、年节日等「等一个特别日子」的场景）
   };
 }
+/* V.92：补齐 repeatCfg 的缺失字段（只补没有的，不动已有的值）。
+   每年 / 连续这些类型只存自己用到的那一个字段（{yearlyAdvance:3}、{days:30}），
+   而 renderRepSheet 是按「所有字段都在」去读的 —— c.repeatCfg.byDay.indexOf 直接抛错，
+   整个点击处理器挂掉，面板打不开（PAM：「只有每周能弹出修改，其他点了没反应，还报错」）。
+   「每周」反而正常，因为它压根没 repeatCfg，走的是 newRepeatCfg() 拿全量默认值。 */
+function ensureRepeatCfg(o){
+  if(!o.repeatCfg)o.repeatCfg={};
+  var d=newRepeatCfg(),k;
+  for(k in d)if(o.repeatCfg[k]===undefined)o.repeatCfg[k]=d[k];
+  return o;
+}
+/* V.93：重复打卡计数 + 连续顺延 + 目标达成
+   计数 = 同系列（repeat+text）已完成期数，直接由数据算出，不额外存字段。 */
+function repDoneCount(repeat,text){
+  var n=0;
+  state.todos.forEach(function(x){ if(x.repeat===repeat&&x.text===text&&x.done)n++; });
+  return n;
+}
+function consecutiveAchieved(t){
+  if(t.repeat!=='consecutive')return false;
+  var N=+(t.repeatCfg&&t.repeatCfg.days)||30;
+  return repDoneCount('consecutive',t.text)>=N;
+}
+/* 待办列表 rtag 文案：所有重复类型都带『已打卡 N 次』；连续类型额外显示目标达成 */
+function repTagText(t){
+  var r=t.repeat, rc=t.repeatCfg||{};
+  if(r==='consecutive'){
+    var N=+(rc.days||30), dn=repDoneCount('consecutive',t.text);
+    if(dn>=N) return '目标达成 ✓ · 已打卡 '+dn+' 次';
+    return '连续 '+N+' 天 · 已打卡 '+dn+' 次';
+  }
+  return (RT[r]||r)+' · 已打卡 '+repDoneCount(r,t.text)+' 次';
+}
+/* 连续类型漏打/放下 → 顺延到漏打日+2天，不删任务、不补卡：
+   当前这期移到 miss+2，清掉中间那天（miss+1）的同系列未完成实例形成间隔，
+   再从顺延后的日期补回未来期（每天+1），并清理多余实例。 */
+function rollConsecutiveMiss(t){
+  if(!t||!t.date)return;
+  var miss=t.date;
+  var nd=fmt(addDays(parse(miss),2));
+  t.date=nd;
+  state.todos=state.todos.filter(function(x){
+    return !(x!==t && !x.done && x.repeat==='consecutive' && x.text===t.text && x.date===fmt(addDays(parse(miss),1)));
+  });
+  syncRepeatFuture(t, nd, true);
+}
 function newTodoCfg(){
   return {
     date:todayStr(),          // 选中的日期（默认今天，「不安排日期」传 null）
@@ -5812,11 +6370,11 @@ function renderAddSummary(){
   var rc=cfg.repeat;
   if(rc==='daily')parts.push('每天');
   else if(rc==='weeklyByDay'){
-    var wd=cfg.repeatCfg.byDay.map(function(x){return '周'+('一二三四五六日')[(x-1)%7];}).join('·');
+    var wd=(cfg.repeatCfg.byDay||[]).map(function(x){return '周'+('一二三四五六日')[(x-1)%7];}).join('·');
     parts.push(wd||'每周');
-  }else if(rc==='consecutive')parts.push('连续 '+cfg.repeatCfg.days+' 天');
-  else if(rc==='monthly')parts.push('每月·提前 '+cfg.repeatCfg.monthlyAdvance+' 天');
-  else if(rc==='yearly')parts.push('每年·提前 '+cfg.repeatCfg.yearlyAdvance+' 天');
+  }else if(rc==='consecutive')parts.push('连续 '+(cfg.repeatCfg.days||0)+' 天');
+  else if(rc==='monthly')parts.push('每月·提前 '+(cfg.repeatCfg.monthlyAdvance||0)+' 天');
+  else if(rc==='yearly')parts.push('每年·提前 '+(cfg.repeatCfg.yearlyAdvance||0)+' 天');
   if(cfg.tags&&cfg.tags.length)parts.push(cfg.tags.map(function(x){return '#'+x;}).join(' '));
   if(!parts.length){
     addSumEl.hidden=true;
@@ -6168,15 +6726,13 @@ function repTarget(){
   if(state.repTarget){
     for(var i=0;i<state.todos.length;i++){
       if(state.todos[i].id===state.repTarget){
-        if(!state.todos[i].repeatCfg)state.todos[i].repeatCfg=newRepeatCfg();
-        return state.todos[i];
+        return ensureRepeatCfg(state.todos[i]);
       }
     }
     state.repTarget=null;/* 目标已被删除 → 回落到新建草稿，不抛错 */
   }
   ensureTodoCfg();
-  if(!state.todoCfg.repeatCfg)state.todoCfg.repeatCfg=newRepeatCfg();
-  return state.todoCfg;
+  return ensureRepeatCfg(state.todoCfg);
 }
 /* 重复设置一句话摘要（编辑行按钮的 title / 提示用） */
 function repSummary(o){
@@ -6193,8 +6749,33 @@ function repSummary(o){
   if(rc==='yearly')return '每年·提前 '+(cfg.yearlyAdvance||0)+' 天提醒';
   return rc;
 }
-function openRepSheet(id){state.repTarget=id||null;renderRepSheet();repSheetEl.hidden=false;}
-function closeRepSheet(){repSheetEl.hidden=true;state.repTarget=null;}
+/* V.90：seriesMode=true 表示从顶部周期列表进来 —— 改的是整组，不只是这一条 */
+function openRepSheet(id,seriesMode){state.repTarget=id||null;state.repSeriesMode=!!seriesMode;renderRepSheet();repSheetEl.hidden=false;}
+function closeRepSheet(){repSheetEl.hidden=true;state.repTarget=null;state.repSeriesMode=false;}
+/* V.90：整组换频率 —— 同名的所有期都换成新周期，再按新周期重排未来期数。
+   只动未完成的期（done 历史一条不删）；未完成的里留最早那条当锚，其余删掉后
+   由 syncRepeatFuture 按新周期补回来（否则会残留老周期的日期，比如每周的 9/12、9/19）。 */
+function reflowRepeatSeries(id){
+  var t=null,i;
+  for(i=0;i<state.todos.length;i++)if(state.todos[i].id===id){t=state.todos[i];break;}
+  if(!t||!t.repeat)return;
+  var repeat=t.repeat,cfg=t.repeatCfg,text=t.text;
+  state.todos.forEach(function(x){
+    if(x.id!==id&&x.repeat&&x.text===text){
+      x.repeat=repeat;
+      x.repeatCfg=cfg?JSON.parse(JSON.stringify(cfg)):null;
+    }
+  });
+  var undone=state.todos.filter(function(x){
+    return x.repeat===repeat&&x.text===text&&!x.done&&x.date;
+  }).sort(function(a,b){return a.date<b.date?-1:1;});
+  if(!undone.length)return;
+  var keep=undone[0];
+  state.todos=state.todos.filter(function(x){
+    return !(x.repeat===repeat&&x.text===text&&!x.done&&x.id!==keep.id);
+  });
+  syncRepeatFuture(keep,keep.date,true);
+}
 function renderRepSheet(){
   var c=repTarget(),rc=c.repeat;
   /* V.42：删掉"不重复"选项——不选任何重复类型就=不重复，多余（PAM：「我想是不选其他重复选项就=不重复，这样的话待办你的不重复是多余的，删掉吧」）
@@ -6209,7 +6790,18 @@ function renderRepSheet(){
   /* V.75：改的是已有待办时，明确告诉用户改的是哪一条——
      避免「以为在配新的，其实改掉了旧的」（这个 sheet 现在两个入口共用） */
   if(state.repTarget&&c.text){
-    h+='<div class="rp-edit-hint">正在改「'+esc(c.text)+'」的重复，保存后立即生效</div>';
+    h+='<div class="rp-edit-hint">正在改「'+esc(c.text)+'」的重复'
+      +(state.repSeriesMode?'（<b>整组一起改</b>）':'')+'，保存后立即生效</div>';
+  }
+  /* V.93：重复设置面板显示『已打卡 N 次』计数；连续类型额外显示目标进度/达成 */
+  if(state.repTarget&&c.text&&c.repeat){
+    var dn=repDoneCount(c.repeat,c.text);
+    var stat='已打卡 '+dn+' 次';
+    if(c.repeat==='consecutive'){
+      var N=+(c.repeatCfg.days||30);
+      stat+=' · 目标 '+N+' 天'+(dn>=N?' · <b class="rp-done">目标达成 ✓</b>':'（还差 '+(N-dn)+' 天）');
+    }
+    h+='<div class="rp-stat">'+stat+'</div>';
   }
   opts.forEach(function(o){
     h+='<div class="rp-row'+(rc===o.k?' on':'')+'" data-rp="'+o.k+'">';
@@ -6221,7 +6813,7 @@ function renderRepSheet(){
       h+='<div class="rp-conf" style="padding-left:26px;margin-top:-6px;margin-bottom:8px">';
       h+='  <span class="rp-bd-label">多选</span>';
       for(var i=1;i<=7;i++){
-        var on=c.repeatCfg.byDay.indexOf(i)>=0;
+        var on=(c.repeatCfg.byDay||[]).indexOf(i)>=0;
         h+='<button type="button" class="rp-chip'+(on?' on':'')+'" data-wd="'+i+'">'+wd[i-1]+'</button>';
       }
       h+='</div>';
@@ -6264,8 +6856,13 @@ repSheetEl.addEventListener('click',function(e){
          注意 closeRepSheet() 会清掉 repTarget，所以 editing 必须先存下来。 */
       if(editing){save();renderAll();}else{renderAddSummary();}
     }else if(k==='ok'){
+      /* V.90：closeRepSheet() 会清掉 repTarget / repSeriesMode，先存下来 */
+      var sm=state.repSeriesMode,sid=state.repTarget;
       closeRepSheet();
-      if(editing){save();renderAll();}else{renderAddSummary();}
+      if(editing){
+        if(sm)reflowRepeatSeries(sid);
+        save();renderAll();
+      }else{renderAddSummary();}
     }
     return;
   }
@@ -6463,6 +7060,17 @@ todoList.addEventListener('click',function(e){
   if(rpt){state.repOpen=!state.repOpen;renderTodo();return;}
   var rdel=e.target.closest('[data-repdel]');
   if(rdel){deleteRepeatSeries(rdel.dataset.repdel,rdel.dataset.rep);return;}
+  /* V.90：顶部周期列表点频率标签 → 改整组的重复设置 */
+  var rcy=e.target.closest('[data-repcycle]');
+  if(rcy){openRepSheet(rcy.dataset.repcycle,true);return;}
+  /* V.88：顶部周期列表点名字 → 就地变输入框（整组改名） */
+  var red=e.target.closest('[data-repedit]');
+  if(red){state.repEdit=red.dataset.repedit;renderTodo();focusRepEdit();return;}
+  /* V.88：只看今天 —— 其余日期收成一行 */
+  var tdo=e.target.closest('[data-todayonly]');
+  if(tdo){state.todayOnly=!state.todayOnly;if(!state.todayOnly)state.futureOpen=false;save();renderTodo();return;}
+  var fuo=e.target.closest('[data-futureopen]');
+  if(fuo){state.futureOpen=!state.futureOpen;save();renderTodo();return;}
   var mp=e.target.closest('[data-mpin]');
   if(mp){multiPin();return;}
   var md=e.target.closest('[data-mdate]');
@@ -6672,7 +7280,13 @@ bindStepDragSort(calBody);
 bindStepDragSort(todoList);
 /* 步骤编辑框失焦即保存 */
 document.addEventListener('focusout',function(e){
-  if(e.target&&e.target.classList&&e.target.classList.contains('st-edit')){
+  if(!e.target||!e.target.classList)return;
+  /* V.88：周期组改名框失焦即保存（要排在 st-edit 之前，它同样带 st-edit 样式） */
+  if(e.target.classList.contains('rep-edit-in')){
+    commitRepEdit(e.target.dataset.repeditin,e.target.value);
+    return;
+  }
+  if(e.target.classList.contains('st-edit')){
     commitStepEdit(e.target.dataset.stepedit,e.target.value);
   }
 });
@@ -6704,7 +7318,7 @@ try{renderAll();}catch(e){
 try{holidaySyncLive();}catch(e){}
 try{renderNoteOverlay();}catch(e){}
 try{renderSplash();}catch(e){}
-autoBackup();
+hydrateDaysMedia(function(){ try{autoBackup();}catch(e){} });
 renderBkStatus();
 renderTodoTagChips();
 
@@ -6798,15 +7412,14 @@ function confirmDoneDate(){
     if(f){
       f.step.done=true;f.step.doneAt=ds;
       var t=f.todo;
-      var allDone=t.steps.length&&t.steps.every(function(x){return x.done;});
-      if(allDone&&!t.done){
-        if(!t.date){
-          state.pendingStepId=null;
-          openDoneDate(t.id);
-          save();renderAll();return;
-        }
-        markDone(t);
-      }
+      /* V.88：交给 recalcStepTodo 统一处理。原来这里只算「steps 是否全 done」，
+         漏了子步骤这一层——勾完最后一个子步骤，父步骤不会跟着完成。
+         recalcStepTodo 内部会先 recalcStepDone（子步骤推父步骤），再决定整条待办。
+         注意：整条待办没有日期时它会打开「选完成日期」弹窗，那时别关掉弹窗。 */
+      recalcStepTodo(t);
+      save();renderAll();
+      if(!t.done&&state.pendingDoneId)return;
+      closeDoneDate();return;
     }
     save();renderAll();closeDoneDate();return;
   }
